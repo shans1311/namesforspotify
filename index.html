@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>My Spotify Profile</title>
+    <script src="src/script.js" type="module"></script>
+    <style>
+        .list-container {
+            list-style: none; /* Removes default list styling */
+            padding: 0;
+        }
+        .item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center; /* Aligns items vertically */
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top Artists and Tracks on Spotify</h1>
+
+    <button id="generatePlaylistButton">Generate Playlist Name</button>
+
+    <p id="namesListContainer"></p>
+    <div id="playlistName"></div>
+
+
+
+    <section id="artists-container" class="list-container">
+        <h2>Top Artists</h2>
+    </section>
+
+    <section id="tracks-container" class="list-container">
+        <h2>Top Tracks</h2>
+    </section>
+
+    <section id="genres-container"></section>
+
+</body>
+</html>
