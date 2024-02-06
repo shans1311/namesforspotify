@@ -1,5 +1,5 @@
 const clientId = "f73816622e6e4ad5a1b511dfa3513504";
-const redirectUri = "http://localhost:5173/callback"; // Ensure your Spotify app redirect URI matches
+const redirectUri = "https://namesforspotify.vercel.app/callback"; // Ensure your Spotify app redirect URI matches
 let usedNames = new Set();
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -64,7 +64,7 @@ function parsePlaylistNames(namesString) {
 
 async function fetchChatCompletion(genres) {
     try {
-        const apiUrl = `http://localhost:5174/genres`; // Use the root URL
+        const apiUrl = `https://namesforspotify.vercel.app/genres`; // Use the root URL
 
         const response = await fetch(apiUrl, {
             method: "POST",
