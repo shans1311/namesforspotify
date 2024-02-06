@@ -1,23 +1,57 @@
-const clientId = "f73816622e6e4ad5a1b511dfa3513504"; 
-const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
+const clientId = "f73816622e6e4ad5a1b511dfa3513504";
+const redirectUri = "http://localhost:5173/callback"; // Ensure your Spotify app redirect URI matches
 let usedNames = new Set();
 
+document.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const generateButton = document.getElementById("generatePlaylistButton");
 
-if (!code) {
-    redirectToAuthCodeFlow(clientId);
-} else {
-    const accessToken = await getAccessToken(clientId, code);
-    const artists = await fetchArtists(accessToken)
-    const tracks = await fetchTracks(accessToken)
-    const genres = await fetchGenres(artists)
-    populateUI(genres);
-    
 
+    if (!code) {
+        document.getElementById("loginButton").onclick = () => redirectToAuthCodeFlow(clientId);
+    } else {
+        try {
+            const accessToken = await getAccessToken(clientId, code);
+            const artists = await fetchArtists(accessToken);
+            const tracks = await fetchTracks(accessToken);
+            const genres = await fetchGenres(artists);
+            
+
+            // Assume populateUI is an async function and waits for completion
+            await populateUI(genres);
+
+            // Restore the original button text after generation is complete
+
+            document.getElementById("login").style.display = "none";
+
+            const contentElement = document.getElementById("content");
+            contentElement.style.display = 'flex';
+            contentElement.style.flexDirection = 'column';
+            contentElement.style.justifyContent = 'center';
+            contentElement.style.alignItems = 'center';
+            contentElement.style.height = '100%';       
+            
+            document.querySelector('.copy-button').addEventListener('click', copyToClipboard);
+
+        } catch (error) {
+            console.error("Authentication failed:", error);
+        }
+    }
+});
+
+function copyToClipboard() {
+    const playlistNameElement = document.getElementById("playlistName");
+    if (playlistNameElement.textContent) {
+        navigator.clipboard.writeText(playlistNameElement.textContent)
+    } else {
+        console.log("No playlist name to copy");
+    }
 }
 
 function parsePlaylistNames(namesString) {
-    const namePattern = /\d+\.\s"([^"]+)"/g;
+    const namePattern = /\d+\.\s(.+)/g;
+
     let match;
     let names = [];
 
@@ -47,17 +81,22 @@ async function fetchChatCompletion(genres) {
 
         // Check if 'playlistName' property exists in the response
         if (data.playlistName) {
-            console.log("Generated Playlist Name:", data.playlistName);
-            const playlistNames = parsePlaylistNames(data.playlistName);
-            console.log("Parsed Names:", playlistNames); // Debugging line
-            if (usedNames.length > 0){
-                usedNames.clear();
+            console.log(data.playlistName);
+            try {
+                const playlistNames = parsePlaylistNames(data.playlistName);
+                console.log("Parsed Names:", playlistNames); // Debugging line
+                if (usedNames.length > 0){
+                    usedNames.clear();
+                }
+                return playlistNames;
+            } catch (error) {
+                console.error("error parsing playlist names")
+                return []; // Return an empty array if there's an error
+
             }
-            return playlistNames;
         } else {
             console.error("Invalid response from the backend:", data);
         }
-        return []; // Return an empty array if there's an error
     } catch (error) {
         console.error("Error fetching chat completion: ", error);
     }
@@ -74,7 +113,7 @@ export async function redirectToAuthCodeFlow(clientId) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", redirectUri);
     params.append("scope", "user-top-read");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -109,7 +148,7 @@ export async function getAccessToken(clientId, code) {
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", redirectUri);
     params.append("code_verifier", verifier);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -160,81 +199,52 @@ async function fetchGenres(artists) {
 }
 
 
-function populateUI(genres) {
-    /* const artistsContainer = document.getElementById("artists-container");
-    const tracksContainer = document.getElementById("tracks-container");
-    const genresContainer = document.getElementById("genres-container");
-
-
-
-    if (!artists || !artists.items || artists.items.length === 0) {
-        artistsContainer.innerText = "No top artists found";
-        return;
-    }
-
-    artists.items.forEach((artist) => {
-        let artistElement = document.createElement('div');
-        artistElement.classList.add('artist');
-
-        // Artist's name
-        let nameElement = document.createElement('p');
-        nameElement.innerText = artist.name;
-        nameElement.style.fontWeight = 'bold';
-
-        artistElement.appendChild(nameElement);
-
-        artistsContainer.appendChild(artistElement);
-    });
-
-    if (!tracks || !tracks.items || tracks.items.length === 0) {
-        tracksContainer.innerText = "No top tracks found";
-        return;
-    }
-
-    tracks.items.forEach((tracks) => {
-        let tracksElement = document.createElement('div');
-        tracksElement.classList.add('artist');
-
-        // Artist's name
-        let nameElement = document.createElement('p');
-        nameElement.innerText = tracks.name;
-        nameElement.style.fontWeight = 'bold';
-
-        tracksElement.appendChild(nameElement);
-        tracksContainer.appendChild(tracksElement);
-    });
-
-    if (!genres || genres.length === 0) {
-        genresContainer.innerText = "No genres found";
-        return;
-    }
-
-    genres.forEach(genre => {
-        let genreElement = document.createElement('p');
-        genreElement.innerText = genre;
-        genresContainer.appendChild(genreElement);
-    }); */
-
-
+async function populateUI(genres) {
     let availableNames = [];
-
     const generatePlaylistButton = document.getElementById("generatePlaylistButton");
-    generatePlaylistButton.addEventListener("click", async () => {
+
+    // Clear previous click listeners to prevent multiple bindings
+    generatePlaylistButton.removeEventListener('click', handleGenerateClick);
+    
+    // Define the event handler function
+    async function handleGenerateClick() {
+        // Change button text to "Generating..." with animation for dots
+        generatePlaylistButton.innerHTML = 'Generating<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+
+        // Add CSS class for animation if not already in your stylesheet
+        document.querySelectorAll('.dot').forEach((dot, index) => {
+            dot.style.animation = `jump 1s infinite ${index * 0.2}s`;
+        });
+
         if (availableNames.length === 0) {
-            availableNames = await fetchChatCompletion(genres); // Refill the list when empty
+            availableNames = await fetchChatCompletion(genres); // Fetch new names if the list is empty
             console.log("Available Names After Fetch:", availableNames); // Debugging line
         }
 
-        const randomIndex = Math.floor(Math.random() * availableNames.length);
-        const selectedName = availableNames.splice(randomIndex, 1)[0]; // Remove the selected name
+        if (availableNames.length > 0) {
+            const randomIndex = Math.floor(Math.random() * availableNames.length);
+            const selectedName = availableNames.splice(randomIndex, 1)[0]; // Remove the selected name
             usedNames.add(selectedName); // Add to used names
 
+            // Display the selected playlist name
+            const playlistNameElement = document.getElementById("playlistName");
+            playlistNameElement.textContent = selectedName;
 
-        const playlistNameElement = document.getElementById("playlistName");
-        playlistNameElement.textContent = selectedName;
-    });
+            // Reset the generate button text to "Generate" after displaying the name
+            generatePlaylistButton.textContent = 'Generate';
+        } else {
+            // Handle the case where no names are available
+            console.log("No available names were fetched.");
+            generatePlaylistButton.textContent = 'Generate'; // Reset button text
+        }
+    }
 
+    // Attach the click event handler
+    generatePlaylistButton.addEventListener('click', handleGenerateClick);
 }
+
+
+
 
 
 /* 

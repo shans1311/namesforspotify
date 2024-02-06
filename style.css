@@ -1,96 +1,177 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+body, html {
+  height: 100%;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: Arial, sans-serif;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.gradient-background {
+  background: linear-gradient(112deg, #314333 -12.63%, #234C60 90.23%);
+  padding: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 50px;
+  position: sticky;
+  z-index: 1000;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+  font-size: 1.5em;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+.nav-button {
+  background: none;
+  border: none;
+  color: white;
   font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  text-decoration: none;
+  padding: 0px 10px 0px 10px;
+
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+#login {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#login h1 {
+  color: white;
+  font-size:3rem
+}
+
+#login p {
+  color: white;
+  margin-top: -0.5rem;
+}
+
+#loginButton {
+  background-color: #1DB954;
+  border: none;
+  padding: 20px 40px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-top: 0.5rem;
+
+}
+
+.footer-text {
+  color: white;
+  padding: 20px;
+}
+
+#generatePlaylistButton {
+  background-color: #263538;
+  border: none;
+  padding: 20px 40px;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.playlist-name-container {
+  display: flex;
+  align-items: center;
+  background-color: #8C9C9F;
+  padding: 10px;
+  border-radius: 1.125rem;
+  width: 20%; 
+  max-width: 600px; /* Maximum width of the field */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#playlistName {
+  flex-grow: 1;
+  padding: 10px;
+  text-align: left;
+  color: black;
+  border: none;
+  outline: none;
+  font-size: 1em;
+}
+
+.copy-button {
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000000; /* Same color as part of the gradient for consistency */
+  z-index: 100;
+  font-size: 2em;
+}
+
+#about {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%; /* Set width to 50% of the parent container */
+  margin: 0 auto; /* Center the container by setting auto margins on both sides */
+
+}
+
+
+#about h1 {
+  color: white;
+  font-size:3rem
+}
+
+#about p {
+  color:#c9cbcb;
+  margin-top: -0.5rem;
+  padding: 10px; /* Optional: Add some padding for better readability */
+
+}
+
+
+@keyframes jump {
+0%, 100% {
+  transform: translateY(0);
+}
+50% {
+  transform: translateY(-5px);
+}
+}
+
+.dot {
+animation: jump 1s infinite;
+display: inline-block;
+}
+
+.dot:nth-child(2) {
+animation-delay: 0.1s;
+}
+
+.dot:nth-child(3) {
+animation-delay: 0.2s;
+}
+
+
+@media (max-width: 768px) {
+  .nav-button {
+      font-size: 0.8em;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  .logo {
+      font-size: 1.2em;
   }
 }

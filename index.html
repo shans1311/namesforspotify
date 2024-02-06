@@ -1,46 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>My Spotify Profile</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>namesforspotify</title>
     <script src="src/script.js" type="module"></script>
-    <style>
-        .list-container {
-            list-style: none; /* Removes default list styling */
-            padding: 0;
-        }
-        .item {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center; /* Aligns items vertically */
-        }
+    <link rel="stylesheet" href="style.css">
 
-        .item-name {
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
-    <h1>Top Artists and Tracks on Spotify</h1>
-
-    <button id="generatePlaylistButton">Generate Playlist Name</button>
-
-    <p id="namesListContainer"></p>
-    <div id="playlistName"></div>
-
-
-
-    <section id="artists-container" class="list-container">
-        <h2>Top Artists</h2>
-    </section>
-
-    <section id="tracks-container" class="list-container">
-        <h2>Top Tracks</h2>
-    </section>
-
-    <section id="genres-container"></section>
-
+    <div class="gradient-background">
+        <div class="top-nav">
+            <a href="index.html" class="logo">namesforspotify</a>
+            <div>
+                <a href="index.html" class="nav-button">Generator</a>
+                <a href="about.html" class="nav-button">About</a>
+            </div>
+        </div>
+        <div id="login">
+            <h1>namesforspotify</h1>
+            <p>Generate spotify playlist names, based on your spotify favourites.</p>
+            <button id="loginButton">LOG IN WITH SPOTIFY</button>
+        </div>
+        <div id="content" style="display:none;">
+            <button id="generatePlaylistButton">Generate</button>
+            <div class="playlist-name-container">
+                <div id="playlistName"></div>
+                <button class="copy-button">
+                    &#128203;
+                </button>
+            </div>
+        </div>
+        <div class="footer-text">
+            <p>Powered by Spotify and ChatGPT</p>
+        </div>
+    </div>
 </body>
 </html>
