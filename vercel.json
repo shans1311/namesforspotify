@@ -1,0 +1,3 @@
+{
+    "rewrites": [{ "source": "/genres/", "destination": "/genres" }]
+  }
