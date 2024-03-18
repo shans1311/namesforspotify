@@ -1,4 +1,4 @@
-import './loadEnv.js';
+import '../loadEnv.js';
 import OpenAI from "openai";
 import express from 'express';
 import cors from 'cors';
@@ -53,3 +53,4 @@ server.on('listening', function() {
 module.exports = app
 
 //POST http://localhost:5174/genres net::ERR_CONNECTION_REFUSED
+//POST https://namesforspotify.vercel.app/genres 404 (Not Found)

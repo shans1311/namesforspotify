@@ -1,10 +1,15 @@
-{ 
-    "version": 2, 
-    "rewrites": 
-    [
-        { 
-            "source": "/(.*)", 
-            "destination": "/genres" 
-        }
-    ] 
-}
+{
+    "version": 2,
+    "builds": [
+     {
+         "src": "./openAi_api.js",
+         "use": "@vercel/node"
+     }
+    ],
+    "routes": [
+     {
+         "src": "/(.*)",
+         "dest": "/"
+     }
+    ]
+ }
