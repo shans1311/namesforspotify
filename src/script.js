@@ -2,7 +2,7 @@ const clientId = "f73816622e6e4ad5a1b511dfa3513504";
 //https://namesforspotify.vercel.app
 //http://localhost:5173/callback
 
-const redirectUri = "https://namesforspotify.vercel.app"; // Ensure your Spotify app redirect URI matches
+const redirectUri = "https://namesforspotify.vercel.app/"; // Ensure your Spotify app redirect URI matches
 let usedNames = new Set();
 
 document.addEventListener('DOMContentLoaded', async () => {
