@@ -46,5 +46,8 @@ app.post('/genres', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
+server.listen(5174, 'localhost'); // or server.listen(3001, '0.0.0.0'); for all interfaces
+server.on('listening', function() {
+    console.log('Express server started on port %s at %s', server.address().port, server.address().address);
+});
 module.exports = app
