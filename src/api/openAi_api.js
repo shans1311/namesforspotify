@@ -16,7 +16,7 @@ console.log("api key:" + openAIKey);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-app.post('/genres', async (req, res) => {
+app.post('/api/genres', async (req, res) => {
     try {
         const { genres, usedNames } = req.body;
         const genresString = Array.isArray(genres) ? genres.join(', ') : genres;
@@ -46,11 +46,25 @@ app.post('/genres', async (req, res) => {
         console.log(err.response.data)
     }
 });
-server.listen(5174, 'localhost'); // or server.listen(3001, '0.0.0.0'); for all interfaces
-server.on('listening', function() {
-    console.log('Express server started on port %s at %s', server.address().port, server.address().address);
-});
+
 module.exports = app
 
 //POST http://localhost:5174/genres net::ERR_CONNECTION_REFUSED
 //POST https://namesforspotify.vercel.app/genres 404 (Not Found)
+
+
+/* {
+    "version": 2,
+    "builds": [
+     {
+         "src": "./openAi_api.js",
+         "use": "@vercel/node"
+     }
+    ],
+    "routes": [
+     {
+         "src": "/(.*)",
+         "dest": "/genres"
+     }
+    ]
+ } */
