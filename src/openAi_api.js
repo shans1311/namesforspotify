@@ -43,7 +43,7 @@ app.post('/genres', async (req, res) => {
 
     } catch (error) {
         console.error("Error generating playlist names:", error);
-        res.status(500).json({ error: error.message });
+        console.log(err.response.data)
     }
 });
 server.listen(5174, 'localhost'); // or server.listen(3001, '0.0.0.0'); for all interfaces
