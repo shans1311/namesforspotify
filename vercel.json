@@ -6,7 +6,16 @@
         "dest": "/api/openAi_api.js"
       },
       {
+        "src": "/src/(.*)",
+        "dest": "/src/$1"
+      },
+      {
         "src": "/(.*)",
+        "dest": "/$1",
+        "continue": true
+      },
+      {
+        "src": "/",
         "dest": "/index.html"
       }
     ]
