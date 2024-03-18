@@ -8,20 +8,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5174;
 const openAIKey = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey: openAIKey });
 console.log(process.env)
 console.log("api key:" + openAIKey);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//const PORT = process.env.PORT || 5174;
+//app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.post('/api/genres', async (req, res) => {
     try {
         const { genres, usedNames } = req.body;
         const genresString = Array.isArray(genres) ? genres.join(', ') : genres;
 
-        // Initialize a variable to store the streamed content
         let playlistNamesContent = '';
 
         const stream = await openai.chat.completions.create({
@@ -33,12 +32,10 @@ app.post('/api/genres', async (req, res) => {
             stream: true,
         });
 
-        // Collect streamed data
         for await (const chunk of stream) {
             playlistNamesContent += chunk.choices[0]?.delta?.content || '';
         }
 
-        // Once all data is collected, send it as a response
         res.json({ playlistName: playlistNamesContent });
 
     } catch (error) {
