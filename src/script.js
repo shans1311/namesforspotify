@@ -68,7 +68,7 @@ function parsePlaylistNames(namesString) {
 async function fetchChatCompletion(genres) {
     try {
         console.log("post fetch reached")
-        const apiUrl = `https://namesforspotify.vercel.app/api/genres`; // Use the root URL
+        const apiUrl = `https://namesforspotify.vercel.app/`; // Use the root URL
 
         const response = await fetch(apiUrl, {
             method: "POST",

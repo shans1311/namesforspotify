@@ -16,7 +16,8 @@ console.log("api key:" + openAIKey);
 //const PORT = process.env.PORT || 5174;
 //app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-app.post('/api/genres', async (req, res) => {
+app.post('/', async (req, res) => {
+    console.log("post request reached")
     try {
         const { genres, usedNames } = req.body;
         const genresString = Array.isArray(genres) ? genres.join(', ') : genres;
